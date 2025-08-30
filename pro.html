@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora YPF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1a73e8, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+            width: 450px;
+            text-align: center;
+        }
+        h1 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            width: 90%;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1a73e8;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #155ab6;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: left;
+        }
+        .section {
+            background-color: #e6f0ff;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YPF - Calculadora de Nafta</h1>
+
+        <label for="tipoNafta">Tipo de nafta:</label>
+        <select id="tipoNafta">
+            <option value="super">Super ($1429/litro)</option>
+            <option value="infinia">Infinia ($1649/litro)</option>
+        </select>
+
+        <div class="section">
+            <h3>💰 Cuánto litros podés cargar con tu plata</h3>
+            <label for="dinero">Cantidad de plata ($):</label>
+            <input type="number" id="dinero" placeholder="Ej: 5000" />
+            <button onclick="calcularLitros()">Calcular litros</button>
+        </div>
+
+        <div class="section">
+            <h3>💸 Cuánto te cuesta cargar cierta cantidad de litros</h3>
+            <label for="litros">Cantidad de litros:</label>
+            <input type="number" id="litros" placeholder="Ej: 10" />
+            <button onclick="calcularCosto()">Calcular costo</button>
+        </div>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        const precios = {
+            super: 1429,
+            infinia: 1649
+        };
+
+        function calcularLitros() {
+            let dinero = parseFloat(document.getElementById('dinero').value);
+            let tipo = document.getElementById('tipoNafta').value;
+            let precio = precios[tipo];
+
+            if (isNaN(dinero) || dinero <= 0) {
+                document.getElementById('resultado').innerHTML = "⚠️ Ingrese un monto válido para calcular litros.";
+                return;
+            }
+
+            let litros = dinero / precio;
+            litros = litros.toFixed(2);
+
+            document.getElementById('resultado').innerHTML = `
+                <p>Con <strong>$${dinero}</strong> podés cargar <strong>${litros} litros</strong> de nafta <strong>${tipo.toUpperCase()}</strong>.</p>
+            `;
+        }
+
+        function calcularCosto() {
+            let litros = parseFloat(document.getElementById('litros').value);
+            let tipo = document.getElementById('tipoNafta').value;
+            let precio = precios[tipo];
+
+            if (isNaN(litros) || litros <= 0) {
+                document.getElementById('resultado').innerHTML = "⚠️ Ingrese una cantidad de litros válida.";
+                return;
+            }
+
+            let costo = litros * precio;
+            costo = costo.toFixed(2);
+
+            document.getElementById('resultado').innerHTML = `
+                <p>Cargar <strong>${litros} litros</strong> de nafta <strong>${tipo.toUpperCase()}</strong> cuesta <strong>$${costo}</strong>.</p>
+            `;
+        }
+    </script>
+</body>
+</html>
